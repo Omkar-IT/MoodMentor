@@ -1,21 +1,19 @@
-import os, smtplib
-from email.mime.text import MIMEText
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
-HOST, PORT = "smtp.gmail.com", 587
-EMAIL = os.getenv("SMTP_EMAIL")
-APP_PW = os.getenv("SMTP_APP_PASSWORD")
-
 def send_otp(to_email, code, purpose):
-    subject = "Your Verification Code" if purpose == "signup" else "Your Password Reset Code"
-    msg = MIMEText(f"Your code is: {code}\nExpires in 10 minutes.")
-    msg["From"], msg["To"], msg["Subject"] = EMAIL, to_email, subject
-    try:
-        with smtplib.SMTP(HOST, PORT, timeout=15) as s:
-            s.starttls()
-            s.login(EMAIL, APP_PW)
-            s.sendmail(EMAIL, to_email, msg.as_string())
-        return True, "sent"
-    except Exception as e:
-        return False, str(e)
+    """
+    MOCK EMAIL SENDER FOR FREE TIER RENDER.
+    Instead of hitting port 587 (which Render blocks), this prints the OTP 
+    directly to the Render server logs.
+    """
+    print("\n" + "="*50, flush=True)
+    print(f"🚨 MOCK EMAIL SENT 🚨", flush=True)
+    print(f"To: {to_email}", flush=True)
+    print(f"Purpose: {purpose}", flush=True)
+    print(f"OTP CODE: {code}", flush=True)
+    print("="*50 + "\n", flush=True)
+    
+    # Return success so the frontend thinks the email was sent
+    return True, "sent"
