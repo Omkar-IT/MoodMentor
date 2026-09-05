@@ -1,3 +1,4 @@
+from welcome_image import WELCOME_IMAGE_B64
 import os, re, random, calendar
 from datetime import date, datetime
 import requests, streamlit as st
@@ -2770,7 +2771,6 @@ if st.session_state.token:
         st.stop()
 
 
-
 # ============================================================
 # WELCOME / LOGIN SCREEN
 # ============================================================
@@ -2921,81 +2921,35 @@ if st.session_state.page == "welcome":
         st.markdown("</div>", unsafe_allow_html=True)
 
     with right:
-        bar_heights = [26, 42, 32, 56, 40]
-        bar_colors = ["#F9A8D4", "#C4B5FD", "#67E8F9", "#A78BFA", "#F472B6"]
-        bars_html = "".join(
-            f'<div style="width:8px; height:{h}px; border-radius:5px; '
-            f'background:linear-gradient(180deg,{c},{c}CC); '
-            f'box-shadow:0 4px 8px -2px {c}66;"></div>'
-            for h, c in zip(bar_heights, bar_colors)
-        )
-
         hero_html = (
             '<div style="position:relative; overflow:hidden; border-radius:32px; height:100%; '
-            'min-height:680px; padding:30px 30px 28px 30px; '
-            'background: linear-gradient(150deg, #FBD9EE 0%, #E6DBFF 40%, #D6F3FA 75%, #DFF7EA 100%); '
-            'background-size:260% 260%; animation: heroBgShift 14s ease infinite, '
-            'popIn 700ms cubic-bezier(0.22,1,0.36,1); '
+            'min-height:680px; padding:0; '
             'box-shadow:0 34px 80px -18px rgba(99,102,241,0.35); '
             'border: 1.5px solid rgba(255,255,255,0.7); '
-            'display:flex; flex-direction:column; align-items:center; justify-content:center;">'
+            'display:flex; flex-direction:column;">'
 
-            '<span class="login-blob-1" style="top:-80px;left:-80px;"></span>'
-            '<span class="login-blob-2" style="bottom:-100px;right:-80px;"></span>'
-            '<span class="sparkle" style="top:16px; right:30px;">✨</span>'
-            '<span class="sparkle" style="top:50px; right:64px; animation-delay:0.8s;">✨</span>'
+            # ---- BIG hero image filling the panel ----
+            f'<img src="data:image/jpeg;base64,{WELCOME_IMAGE_B64}" '
+            'style="width:100%; height:100%; object-fit:cover; '
+            'position:absolute; inset:0; z-index:0; display:block;" />'
 
-            '<div style="align-self:center; margin-bottom:36px; position:relative; z-index:3;">'
+            # subtle top gradient so the badge stays readable over the photo
+            '<div style="position:absolute; top:0; left:0; right:0; height:120px; z-index:1; '
+            'background:linear-gradient(180deg, rgba(0,0,0,0.28), transparent);"></div>'
+
+            # AI-powered wellness badge, top-left over the image
+            '<div style="position:relative; z-index:2; padding:20px 24px 0 24px;">'
             '<span class="hero-badge">🧠 &nbsp;AI-Powered Wellness</span>'
             '</div>'
 
-            # ---- Visual stage: centered, bigger mood badge only ----
-            '<div style="width:100%; max-width:360px; margin:0 auto 40px auto; '
-            'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px; position:relative;">'
+            # spacer to push the review card to the bottom
+            '<div style="flex:1;"></div>'
 
-            # dashed ring glow behind the big badge
-            '<div style="position:relative; width:300px; height:300px; display:flex; '
-            'align-items:center; justify-content:center;">'
-            '<div style="position:absolute; top:50%; left:50%; width:300px; height:300px; '
-            'border-radius:50%; border:1.5px dashed rgba(147,51,234,0.25); '
-            'transform:translate(-50%,-50%); animation: ringPulseSlow 5s ease-in-out infinite;"></div>'
-
-            # BIG circular "What's your mood today?" badge — enlarged
-            '<div style="position:relative; z-index:2; width:266px; height:266px; border-radius:50%; '
-            'background: linear-gradient(145deg, #EC4899 0%, #9F7AEA 55%, #6366F1 100%); '
-            'border: 5px dashed rgba(255,255,255,0.7); '
-            'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:9px; '
-            'box-shadow: 0 34px 70px -14px rgba(147,51,234,0.55); '
-            'transform: rotate(-4deg); '
-            'animation: floatSlow 4.5s ease-in-out infinite, heroGlow 4.5s ease-in-out infinite;">'
-            '<div style="font-size:0.92rem; font-weight:800; color:white; letter-spacing:0.1em; opacity:0.92;">WHAT\'S YOUR</div>'
-            '<div style="display:flex; align-items:center; gap:7px;">'
-            '<span style="font-size:3.2rem; font-weight:900; color:white; font-family:Poppins,sans-serif; '
-            'text-shadow:0 4px 10px rgba(0,0,0,0.12);">M</span>'
-            '<span style="width:48px;height:48px;border-radius:50%;background:#FBBF24;'
-            'display:flex;align-items:center;justify-content:center;font-size:27px;'
-            'box-shadow:0 4px 10px -2px rgba(0,0,0,0.25);">😊</span>'
-            '<span style="width:48px;height:48px;border-radius:50%;background:white;'
-            'display:flex;align-items:center;justify-content:center;font-size:27px;'
-            'box-shadow:0 4px 10px -2px rgba(0,0,0,0.25);">🙁</span>'
-            '<span style="font-size:3.2rem; font-weight:900; color:white; font-family:Poppins,sans-serif; '
-            'text-shadow:0 4px 10px rgba(0,0,0,0.12);">D</span>'
-            '</div>'
-            '<div style="font-size:1.15rem; font-weight:800; color:white; letter-spacing:0.06em;">TODAY?</div>'
-            '</div>'
-            '</div>'
-
-            '</div>'
-            # ---- end visual stage ----
-
-            '<div style="text-align:center; padding:0 6px; margin-bottom:22px; position:relative; z-index:2;">'
-            '<div class="greet-title" style="font-size:1.5rem; line-height:1.3;">Your mood, your story.</div>'
-            f'<div style="font-size:0.94rem; font-weight:500; color:{MUTED}; margin-top:8px; max-width:310px; '
-            'line-height:1.55;">Check in daily, journal freely, and watch your patterns come into focus.</div></div>'
-
-            '<div style="margin-top:auto; background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); '
+            # review card, overlapping the bottom of the image
+            '<div style="position:relative; z-index:2; margin:0 20px 20px 20px; '
+            'background:rgba(255,255,255,0.95); backdrop-filter:blur(16px); '
             'padding:18px 22px; border-radius:22px; border:1.5px solid rgba(255,255,255,0.95); '
-            'box-shadow:0 18px 40px -14px rgba(99,102,241,0.35); width:100%; position:relative; z-index:2;">'
+            'box-shadow:0 18px 40px -14px rgba(99,102,241,0.35);">'
             '<div class="stars-twinkle" style="color:#F59E0B; font-size:1.05rem; margin-bottom:7px; letter-spacing:2px;">★★★★★</div>'
             '<div style="font-size:0.88rem; font-weight:500; color:#1E1B2E; line-height:1.55; margin-bottom:12px;">'
             '"MoodMentor made checking in on myself feel light, not like a chore."</div>'
@@ -3005,7 +2959,9 @@ if st.session_state.page == "welcome":
             'box-shadow:0 4px 10px -2px rgba(236,72,153,0.5);">S</div>'
             f'<div style="font-size:0.82rem; font-weight:800; color:{TITLE_COLOR};">Sarah Jenkins</div>'
             f'<div style="font-size:0.75rem; font-weight:600; color:{MUTED}; margin-left:auto;">Verified user</div>'
-            '</div></div></div>'
+            '</div></div>'
+
+            '</div>'
         )
         st.markdown(hero_html, unsafe_allow_html=True)
 
